@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure File Download</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      overflow: hidden;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: -1;
+    }
+
+    .container {
+      text-align: center;
+      background: rgba(15, 12, 41, 0.85);
+      padding: 40px 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 204, 255, 0.2);
+      max-width: 600px;
+      margin: 20px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: glow 3s infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 20px rgba(0, 204, 255, 0.2);
+      }
+      to {
+        box-shadow: 0 0 30px rgba(0, 204, 255, 0.4), 0 0 40px rgba(0, 102, 255, 0.2);
+      }
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 15px;
+      color: #00ccff;
+      text-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+    }
+
+    p {
+      margin-bottom: 30px;
+      font-size: 1.1em;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .download-btn {
+      padding: 15px 40px;
+      background: linear-gradient(45deg, #0078ff, #00ccff);
+      border: none;
+      color: white;
+      font-size: 1.1em;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 4px 15px rgba(0, 120, 255, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 120, 255, 0.6);
+    }
+
+    .download-btn:active {
+      transform: translateY(1px);
+    }
+
+    .download-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .download-btn:hover::before {
+      left: 100%;
+    }
+
+    .file-info {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: rgba(255, 255, 255, 0.6);
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="container">
+  <h1>Hey CST Students Download Python Suggestion</h1>
+  <p>Your secure file is ready to download. Click the button below to get your Python study materials.</p>
+  <a href="https://oiosend.com/download/6873c4737c77370027f2f478" class="download-btn" download>
+    Download Now
+  </a>
+  <div class="file-info">File size: 2.4MB • PDF Format</div>
+</div>
+
+<script>
+  const canvas = document.getElementById("stars");
+  const ctx = canvas.getContext("2d");
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  // Create stars with different colors and properties
+  const stars = [];
+  const starCount = 300;
+  const colors = [
+    '#ffffff', '#00ccff', '#ff3366', '#ffcc00', '#9933ff', 
+    '#33ffcc', '#ff9933', '#6699ff'
+  ];
+
+  for (let i = 0; i < starCount; i++) {
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      radius: Math.random() * 2 + 0.5,
+      speed: Math.random() * 0.8 + 0.2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      alpha: Math.random() * 0.8 + 0.2,
+      angle: Math.random() * Math.PI * 2,
+      orbitRadius: Math.random() * 3 + 1,
+      originalX: Math.random() * canvas.width,
+      originalY: Math.random() * canvas.height
+    });
+  }
+
+  function animateStars() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Add subtle gradient overlay
+    const gradient = ctx.createRadialGradient(
+      canvas.width/2, canvas.height/2, 0,
+      canvas.width/2, canvas.height/2, Math.max(canvas.width, canvas.height)/2
+    );
+    gradient.addColorStop(0, 'rgba(15, 12, 41, 0.1)');
+    gradient.addColorStop(1, 'rgba(5, 2, 31, 0.8)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    stars.forEach(star => {
+      // Update position with slight orbiting effect
+      star.angle += 0.002;
+      star.x = star.originalX + Math.cos(star.angle) * star.orbitRadius;
+      star.y += star.speed;
+      
+      // Reset star to top when it reaches bottom
+      if (star.y > canvas.height) {
+        star.y = 0;
+        star.originalX = Math.random() * canvas.width;
+        star.originalY = 0;
+      }
+      
+      // Draw star with glow effect
+      const glow = ctx.createRadialGradient(
+        star.x, star.y, 0,
+        star.x, star.y, star.radius * 3
+      );
+      glow.addColorStop(0, star.color);
+      glow.addColorStop(1, 'transparent');
+      
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius * 3, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Draw star core
+      ctx.fillStyle = star.color;
+      ctx.globalAlpha = star.alpha;
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+
+    requestAnimationFrame(animateStars);
+  }
+
+  animateStars();
+</script>
+
+</body>
+</html>
